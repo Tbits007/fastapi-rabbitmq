@@ -1,7 +1,8 @@
+# docker-compose down --volumes
+# docker-compose up --build 
 services:
   rabbitmq:
     image: rabbitmq:4-management
-    hostname: rabbitmq
     container_name: rabbitmq
     ports:
       - "5672:5672"
@@ -12,5 +13,39 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
 
+  consumer:
+    build: ./rmq_app/consumer
+    container_name: consumer
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    restart: always
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_LOGIN=guest
+      - RABBITMQ_PASSWORD=guest
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./rmq_app/consumer:/app
+
+  producer:
+    build: ./rmq_app/producer
+    container_name: producer
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    restart: always
+    ports:
+      - 8080:8000
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_LOGIN=guest
+      - RABBITMQ_PASSWORD=guest
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./rmq_app/producer:/app
+
 volumes:
   rabbitmq-data:
+  consumer:
+  producer:
