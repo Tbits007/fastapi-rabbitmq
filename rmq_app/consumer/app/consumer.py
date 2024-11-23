@@ -11,8 +11,6 @@ async def create_connection() -> AbstractRobustConnection:
 
 
 async def consume() -> None:
-    print("tuttaiuert")
-    print(settings.amqp_url)
     connection = await create_connection()
     queue_name = "test_queue"
 
