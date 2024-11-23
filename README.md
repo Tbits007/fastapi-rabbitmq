@@ -24,9 +24,6 @@ This repository demonstrates how to build asynchronous communication between ser
 - Processes messages from a RabbitMQ queue.
 - Demonstrates asynchronous data handling.
 
-### Logging:
-- Clear and concise logs to track message flow and processing status.
-
 ---
 
 ## 📂 Project Structure
