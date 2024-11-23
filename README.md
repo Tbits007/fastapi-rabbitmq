@@ -41,7 +41,7 @@ This repository demonstrates how to build asynchronous communication between ser
 2. Start RabbitMQ via Docker:
    
    ```bash
-   docker-compose up -d
+   docker-compose up --build
    
 ---
 
